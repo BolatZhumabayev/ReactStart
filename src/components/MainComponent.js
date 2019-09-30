@@ -12,14 +12,23 @@ class Main extends Component {
             dishes : DISHES,
             selectedDish : null
         };
+        console.log('Main Component constructor is invoked');
     }
 
+    componentDidMount() {
+      console.log('Main Component componentDidMount is invoked');
+	}
+	
+	componentDidUpdate() {
+		console.log('Main Component componentDidUpdate is invoked');
+  }
 
     onDishSelect(dishId) {
         this.setState ({ selectedDish : dishId});
     }
 
     render() {
+        console.log('Main Component render is invoked');
         return(
             <div>
             <Navbar dark color="primary">
@@ -27,7 +36,9 @@ class Main extends Component {
                 <NavbarBrand href="/">Ristorante Con Fusion</NavbarBrand>
               </div>
             </Navbar>
-            <Menu dishes={ this.state.dishes} />
+            <Menu dishes={ this.state.dishes}
+            onClick={(dishId) => this.onDishSelect(dishId)} />
+            <DishDetail dish={this.state.dishes.filter((dish) => dish.id === this.state.selectedDish)[0]} />
           </div>
 
         );
@@ -35,3 +46,5 @@ class Main extends Component {
 
 
 }
+
+export default Main;
