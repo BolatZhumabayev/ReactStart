@@ -1,28 +1,26 @@
-import React, {Component } from 'react';
+import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 
-class DishDetail extends Component {
-    constructor (props) {
-        super(props);
-        // this.state = { 
-        //     dish : this.props.dish
-        // }
-        console.log('DishDetail Component constructor is invoked');
-    }
 
-    componentDidMount() {
-        console.log('Dishdetail Component componentDidMount is invoked');
+    function RenderDish( {dish} ) {
+        return (
+            <div className="col-12 col-md-5 m-1">
+                    <Card>
+                    <CardImg width="100%" src={dish.image} alt={dish.name} />
+                    <CardBody>
+                        <CardTitle>{dish.name}</CardTitle>
+                        <CardText>{dish.description}</CardText>
+                    </CardBody>
+                </Card>
+            </div>
+        );
     }
-
-    componentDidUpdate() {
-        console.log('Dishdetail Component componentDidUpdate is invoked');
-    }
-
-    renderComments(comments) {
+    
+    function RenderComments( {comments} ) {
         if (comments != null) {
             const commentStruct = comments.map(
                 comment => {
-                    return (  
+                    return (
                             <div key={comment.id.toString()}>   
                                     <div>{comment.body}</div>
                                     <div>-- { comment.author }, { new Intl.DateTimeFormat('ru-Ru', { year: 'numeric', month: 'short', day: '2-digit'}).format(comment.d)} 
@@ -34,7 +32,10 @@ class DishDetail extends Component {
             ) ;
 
             return (
-                <div>{commentStruct}</div>
+                <div className="col-12 col-md-5 m-1">
+                        <h4>Comments</h4>
+                        <div>{commentStruct}</div>
+                </div>
             );
             
          }
@@ -45,26 +46,14 @@ class DishDetail extends Component {
          }
     }
 
-    render() {
-        console.log('Dishdetail Component render is invoked');
-        const dish = this.props.dish;
+    const DishDetail = (props) =>  {
+        const dish = props.dish;
         if (dish != null) {
            return (
             <div className="container">
                 <div className="row">
-                    <div className="col-12 col-md-5 m-1">
-                         <Card>
-                            <CardImg width="100%" src={dish.image} alt={dish.name} />
-                            <CardBody>
-                                <CardTitle>{dish.name}</CardTitle>
-                                <CardText>{dish.description}</CardText>
-                            </CardBody>
-                        </Card>
-                    </div>
-                    <div className="col-12 col-md-5 m-1">
-                        <h4>Comments</h4>
-                        <div>{ this.renderComments (dish.comments) }</div>
-                    </div>
+                    <RenderDish dish={props.dish} />
+                    <RenderComments comments={props.dish.comments} />
                  </div>
                </div>
            );
@@ -75,7 +64,5 @@ class DishDetail extends Component {
            );
         }
      }
-}
-
-
+     
 export default DishDetail;

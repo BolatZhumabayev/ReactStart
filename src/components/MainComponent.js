@@ -1,50 +1,43 @@
 import React, { Component} from 'react';
-import { Navbar, NavbarBrand } from 'reactstrap';
+import Header from './HeaderComponent';
+import Footer from './FooterComponent';
+import Home from './HomeComponent';
 import Menu from './MenuComponent';
-import DishDetail from './DishdetailComponent';
 import { DISHES } from '../shared/dishes';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import { UV_UDP_REUSEADDR } from 'constants';
 
 class Main extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            dishes : DISHES,
-            selectedDish : null
+            dishes : DISHES
+           // selectedDish : null
         };
-        console.log('Main Component constructor is invoked');
-    }
 
-    componentDidMount() {
-      console.log('Main Component componentDidMount is invoked');
-	}
-	
-	componentDidUpdate() {
-		console.log('Main Component componentDidUpdate is invoked');
-  }
-
-    onDishSelect(dishId) {
-        this.setState ({ selectedDish : dishId});
     }
 
     render() {
-        console.log('Main Component render is invoked');
-        return(
+      const HomePage = () => {
+        return (
+          <Home/>
+        );
+      }
+      
+      return(
             <div>
-            <Navbar dark color="primary">
-              <div className="container">
-                <NavbarBrand href="/">Ristorante Con Fusion</NavbarBrand>
-              </div>
-            </Navbar>
-            <Menu dishes={ this.state.dishes}
-            onClick={(dishId) => this.onDishSelect(dishId)} />
-            <DishDetail dish={this.state.dishes.filter((dish) => dish.id === this.state.selectedDish)[0]} />
+            <Header />
+            <Switch>
+              <Route path="/home" component = {HomePage} />
+              <Route exact path="/menu" component={ () => <Menu dishes={this.state.dishes}/> } />
+              <Redirect to="/home" />
+            </Switch>
+            <Footer />
           </div>
 
         );
     }
-
-
 }
 
 export default Main;
